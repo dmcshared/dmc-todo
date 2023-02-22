@@ -3,21 +3,14 @@
         (
             hidden: false,
             name: "ToDo Fixes",
-            open: true,
-            todos: [
-                (
-                    name: "Add mouse support to toggle items",
-                    done_time: None,
-                    due: None,
-                    created: "2023-02-21 22:16:38.054037996 -05:00:00",
-                ),
-            ],
+            open: false,
+            todos: [],
             completed: [
                 (
-                    name: "Going two layers up on cursor_down doesn\'t work",
-                    done_time: Some("2023-02-21 23:21:29.171204572 -05:00:00"),
+                    name: "Add mouse support to toggle items",
+                    done_time: Some("2023-02-21 23:32:43.548563554 -05:00:00"),
                     due: None,
-                    created: "2023-02-21 19:58:44.385395412 -05:00:00",
+                    created: "2023-02-21 22:16:38.054037996 -05:00:00",
                 ),
             ],
             todo_archive: [
@@ -44,6 +37,12 @@
                     done_time: Some("2023-02-21 22:57:46.419226881 -05:00:00"),
                     due: None,
                     created: "2023-02-21 22:25:06.84387907 -05:00:00",
+                ),
+                (
+                    name: "Going two layers up on cursor_down doesn\'t work",
+                    done_time: Some("2023-02-21 23:21:29.171204572 -05:00:00"),
+                    due: None,
+                    created: "2023-02-21 19:58:44.385395412 -05:00:00",
                 ),
             ],
             subgroups: [],

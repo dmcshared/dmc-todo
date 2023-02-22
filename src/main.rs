@@ -6,12 +6,16 @@ use std::{
     env,
     io::{stdout, Stdout, Write},
     path::PathBuf,
+    thread::sleep,
 };
 
 use anyhow::{anyhow, Result};
 use crossterm::{
     cursor::{Hide, MoveTo, Show},
-    event::{poll, read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyModifiers},
+    event::{
+        poll, read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyModifiers,
+        MouseButton, MouseEventKind,
+    },
     execute, queue,
     style::{Color, Print, SetForegroundColor},
     terminal::{
@@ -242,6 +246,45 @@ fn create_top_group(config: &mut TodoConfig, stdout: &mut Stdout) -> Result<()> 
     Ok(())
 }
 
+fn activate_item(cursor: &mut Cursor, config: &mut TodoConfig) -> Result<()> {
+    if match cursor {
+        Cursor::Hierarchy(ref mut h) => {
+            matches!(h.find_item(config)?.item, HierarchyItemEnum::Group(_))
+        }
+    } {
+        match cursor {
+            Cursor::Hierarchy(ref mut h) => {
+                if let HierarchyItemEnumMut::Group(g) = h.find_item_mut(config)?.item {
+                    g.open = !g.open;
+                }
+            }
+        };
+    } else if match cursor {
+        Cursor::Hierarchy(ref mut h) => {
+            matches!(h.find_item(config)?.item, HierarchyItemEnum::Todo(_))
+        }
+    } {
+        match cursor {
+            Cursor::Hierarchy(ref mut h) => {
+                let g = h.find_group_mut(config)?;
+                if h.last()? < g.subgroups.len() + g.todos.len() {
+                    let mut t = g.todos.remove(h.last()? - g.subgroups.len());
+                    t.done_time = OffsetDateTime::now_local().ok();
+                    g.completed.push(t);
+                } else if h.last()? < g.subgroups.len() + g.todos.len() + g.completed.len() {
+                    let mut t = g
+                        .completed
+                        .remove(h.last()? - g.subgroups.len() - g.todos.len());
+                    t.done_time = None;
+                    g.todos.push(t);
+                }
+            }
+        };
+    }
+
+    Ok(())
+}
+
 fn main() -> Result<()> {
     let custom_path = &env::args().nth(1);
 
@@ -321,6 +364,10 @@ fn main() -> Result<()> {
             }
 
             let event = read()?;
+
+            // print!("{:?}", event);
+            // execute!(stdout, Clear(ClearType::All), Print(format!("{:?}", event)))?;
+            // sleep(std::time::Duration::from_millis(1000));
 
             match event {
                 Event::Key(ke) => {
@@ -656,7 +703,19 @@ fn main() -> Result<()> {
                         }
                     }
                 }
-                Event::Mouse(_me) => {}
+                Event::Mouse(me) => {
+                    if let MouseEventKind::Down(MouseButton::Left) = me.kind {
+                        match cursor {
+                            Cursor::Hierarchy(ref mut h) => {
+                                h.indexes = vec![0];
+                                for _ in 1..me.row {
+                                    h.cursor_down(&config)?;
+                                }
+                                activate_item(&mut cursor, &mut config)?;
+                            }
+                        }
+                    }
+                }
                 _ => {}
             }
 
