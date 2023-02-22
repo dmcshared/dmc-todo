@@ -1,3 +1,4 @@
+pub mod command_manager;
 pub mod navigation;
 pub mod todo_config;
 
@@ -13,7 +14,10 @@ use crossterm::{
     event::{poll, read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode, KeyModifiers},
     execute, queue,
     style::{Color, Print, SetForegroundColor},
-    terminal::{disable_raw_mode, enable_raw_mode, Clear},
+    terminal::{
+        disable_raw_mode, enable_raw_mode, Clear, ClearType, EnterAlternateScreen,
+        LeaveAlternateScreen,
+    },
 };
 use time::{format_description, OffsetDateTime};
 use time_humanize::HumanTime;
@@ -130,7 +134,12 @@ fn prompt(stdout: &mut Stdout, prompt: &str) -> Result<String> {
     disable_raw_mode()?;
     execute!(stdout, Show)?;
 
-    execute!(stdout, MoveTo(0, 0), Print(prompt))?;
+    execute!(
+        stdout,
+        MoveTo(0, 0),
+        Clear(ClearType::CurrentLine),
+        Print(prompt)
+    )?;
 
     let mut out = String::new();
 
@@ -234,17 +243,6 @@ fn create_top_group(config: &mut TodoConfig, stdout: &mut Stdout) -> Result<()> 
 }
 
 fn main() -> Result<()> {
-    // println!("Hello, world!");
-
-    // stdout()
-    //     .execute(SetForegroundColor(Color::Blue))?
-    //     .execute(SetBackgroundColor(Color::Red))?
-    //     .execute(Print(format!("{}", OffsetDateTime::now_local()?)))?
-    //     .execute(ResetColor)?;
-
-    // try to read config at ~/config/dmc/todo.ron
-    // if it doesn't exist, create it using the default config
-    // if it does exist, read it and use it
     let custom_path = &env::args().nth(1);
 
     let config_path = &if let Some(path) = custom_path {
@@ -286,8 +284,7 @@ fn main() -> Result<()> {
 
     let mut stdout = stdout();
 
-    execute!(stdout, EnableMouseCapture)?;
-    execute!(stdout, Hide)?;
+    execute!(stdout, EnterAlternateScreen, EnableMouseCapture, Hide)?;
 
     // println!("Press 'ESC' to quit.");
 
@@ -675,9 +672,7 @@ fn main() -> Result<()> {
         }
     }
 
-    execute!(stdout, Show)?;
-
-    execute!(stdout, DisableMouseCapture)?;
+    execute!(stdout, Show, DisableMouseCapture, LeaveAlternateScreen)?;
 
     disable_raw_mode()?;
 

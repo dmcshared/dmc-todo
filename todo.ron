@@ -12,12 +12,6 @@
                     created: "2023-02-21 19:58:44.385395412 -05:00:00",
                 ),
                 (
-                    name: "Clear screen on prompts",
-                    done_time: None,
-                    due: None,
-                    created: "2023-02-21 22:14:50.227224256 -05:00:00",
-                ),
-                (
                     name: "Number Preview on Group shouldn\'t count completed",
                     done_time: None,
                     due: None,
@@ -29,15 +23,29 @@
                     due: None,
                     created: "2023-02-21 22:16:38.054037996 -05:00:00",
                 ),
+            ],
+            completed: [
+                (
+                    name: "Clear screen on prompts",
+                    done_time: Some("2023-02-21 22:54:11.227753826 -05:00:00"),
+                    due: None,
+                    created: "2023-02-21 22:14:50.227224256 -05:00:00",
+                ),
                 (
                     name: "Clear screen on exit (or use screenbuffer?)",
-                    done_time: None,
+                    done_time: Some("2023-02-21 22:57:46.419226881 -05:00:00"),
                     due: None,
                     created: "2023-02-21 22:25:06.84387907 -05:00:00",
                 ),
             ],
-            completed: [],
-            todo_archive: [],
+            todo_archive: [
+                (
+                    name: "che",
+                    done_time: None,
+                    due: None,
+                    created: "2023-02-21 22:54:00.258828627 -05:00:00",
+                ),
+            ],
             subgroups: [],
             subgroup_archive: [],
         ),
