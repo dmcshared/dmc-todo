@@ -248,12 +248,28 @@ impl PositionHierarchy {
         if *self.indexes.last().ok_or(MoveError::NoIndex)? > 0 {
             self.group_up(context)?;
 
-            if let HierarchyItemEnum::Group(g) = self.find_item(context)?.item {
+            while let HierarchyItemEnum::Group(g) = self.find_item(context)?.item {
                 if g.open && !g.is_empty() {
                     self.hierarchy_down_no_open(context)?;
                     *self.last_mut()? = g.len() - 1;
+                } else {
+                    break;
                 }
             }
+        } else if self.indexes.len() == 1 {
+            // special handling for first top-level group (wrap around to final)
+
+            *self.last_mut()? = context.groups.len() -1;
+
+            while let HierarchyItemEnum::Group(g) = self.find_item(context)?.item {
+                if g.open && !g.is_empty() {
+                    self.hierarchy_down_no_open(context)?;
+                    *self.last_mut()? = g.len() - 1;
+                } else {
+                    break;
+                }
+            }
+
         } else {
             self.hierarchy_up(context)?;
         }
@@ -274,12 +290,10 @@ impl PositionHierarchy {
             self.group_down(context)?;
         }
 
-        let group_count = {
-            let group = self.find_group(context)?;
-            group.subgroups.len() + group.todos.len() + group.completed.len()
-        };
+        // let group_count = self.find_group(context)?.len();
 
-        if *self.indexes.last().ok_or(MoveError::NoIndex)? + 1 >= group_count {
+        while *self.indexes.last().ok_or(MoveError::NoIndex)? + 1 >= self.find_group(context)?.len()
+        {
             self.hierarchy_up(context)?;
         }
         self.group_down(context)?;

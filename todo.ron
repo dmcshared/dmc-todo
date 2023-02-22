@@ -6,18 +6,6 @@
             open: true,
             todos: [
                 (
-                    name: "Going two layers up on cursor_down doesn\'t work",
-                    done_time: None,
-                    due: None,
-                    created: "2023-02-21 19:58:44.385395412 -05:00:00",
-                ),
-                (
-                    name: "Number Preview on Group shouldn\'t count completed",
-                    done_time: None,
-                    due: None,
-                    created: "2023-02-21 19:59:20.700324524 -05:00:00",
-                ),
-                (
                     name: "Add mouse support to toggle items",
                     done_time: None,
                     due: None,
@@ -26,16 +14,10 @@
             ],
             completed: [
                 (
-                    name: "Clear screen on prompts",
-                    done_time: Some("2023-02-21 22:54:11.227753826 -05:00:00"),
+                    name: "Going two layers up on cursor_down doesn\'t work",
+                    done_time: Some("2023-02-21 23:21:29.171204572 -05:00:00"),
                     due: None,
-                    created: "2023-02-21 22:14:50.227224256 -05:00:00",
-                ),
-                (
-                    name: "Clear screen on exit (or use screenbuffer?)",
-                    done_time: Some("2023-02-21 22:57:46.419226881 -05:00:00"),
-                    due: None,
-                    created: "2023-02-21 22:25:06.84387907 -05:00:00",
+                    created: "2023-02-21 19:58:44.385395412 -05:00:00",
                 ),
             ],
             todo_archive: [
@@ -44,6 +26,24 @@
                     done_time: None,
                     due: None,
                     created: "2023-02-21 22:54:00.258828627 -05:00:00",
+                ),
+                (
+                    name: "Clear screen on prompts",
+                    done_time: Some("2023-02-21 22:54:11.227753826 -05:00:00"),
+                    due: None,
+                    created: "2023-02-21 22:14:50.227224256 -05:00:00",
+                ),
+                (
+                    name: "Number Preview on Group shouldn\'t count completed",
+                    done_time: Some("2023-02-21 22:59:40.41599105 -05:00:00"),
+                    due: None,
+                    created: "2023-02-21 19:59:20.700324524 -05:00:00",
+                ),
+                (
+                    name: "Clear screen on exit (or use screenbuffer?)",
+                    done_time: Some("2023-02-21 22:57:46.419226881 -05:00:00"),
+                    due: None,
+                    created: "2023-02-21 22:25:06.84387907 -05:00:00",
                 ),
             ],
             subgroups: [],

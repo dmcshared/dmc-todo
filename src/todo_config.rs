@@ -78,7 +78,13 @@ impl Group {
     }
 
     pub fn todo_count(&self) -> usize {
-        self.traverse(0, |_, _, v| (true, v), |_, _, v| v + 1, |_, _, v| v, 0)
+        self.traverse(
+            0,
+            |_, _, v| (true, v),
+            |t, _, v| if t.done_time.is_none() { v + 1 } else { v },
+            |_, _, v| v,
+            0,
+        )
     }
 
     pub fn is_empty(&self) -> bool {
