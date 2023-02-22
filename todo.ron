@@ -4,14 +4,21 @@
             hidden: false,
             name: "ToDo Fixes",
             open: true,
-            todos: [],
-            completed: [
+            todos: [
                 (
-                    name: "Fix mouse input showing in prompt and other escapes",
-                    done_time: Some("2023-02-21 23:42:55.054630859 -05:00:00"),
+                    name: "Add Flat Mode",
+                    done_time: None,
                     due: None,
-                    created: "2023-02-21 23:37:43.045387262 -05:00:00",
+                    created: "2023-02-21 23:48:03.404392021 -05:00:00",
                 ),
+                (
+                    name: "Add Help Menu",
+                    done_time: None,
+                    due: None,
+                    created: "2023-02-21 23:48:15.486200433 -05:00:00",
+                ),
+            ],
+            completed: [
                 (
                     name: "Fix not changing due date clears it",
                     done_time: Some("2023-02-21 23:45:13.586301382 -05:00:00"),
@@ -79,6 +86,12 @@
                     done_time: None,
                     due: None,
                     created: "2023-02-21 23:42:07.979731889 -05:00:00",
+                ),
+                (
+                    name: "Fix mouse input showing in prompt and other escapes",
+                    done_time: Some("2023-02-21 23:42:55.054630859 -05:00:00"),
+                    due: None,
+                    created: "2023-02-21 23:37:43.045387262 -05:00:00",
                 ),
             ],
             subgroups: [],
