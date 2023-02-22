@@ -236,24 +236,23 @@ fn prompt_date_in_place(
     let choice = prompt(stdout, "Change due date? (k/y/n) ", "").ok()?;
     match choice.as_str() {
         "y" => {
-            let year_input = prompt(stdout, "Year? ", &format!("{} ", current.year())).ok()?;
+            let year_input = prompt(stdout, "Year? ", &format!("{}", current.year())).ok()?;
             if !year_input.is_empty() {
                 current = current.replace_year(year_input.parse().ok()?).ok()?;
             }
-            let month_input = prompt(stdout, "Month? ", &format!("{} ", current.month())).ok()?;
+            let month_input = prompt(stdout, "Month? ", &format!("{}", current.month())).ok()?;
             if !month_input.is_empty() {
                 current = current.replace_month(month_input.parse().ok()?).ok()?;
             }
-            let day_input = prompt(stdout, "Day? ", &format!("{} ", current.day())).ok()?;
+            let day_input = prompt(stdout, "Day? ", &format!("{}", current.day())).ok()?;
             if !day_input.is_empty() {
                 current = current.replace_day(day_input.parse().ok()?).ok()?;
             }
-            let hour_input = prompt(stdout, "Hour? ", &format!("{} ", current.hour())).ok()?;
+            let hour_input = prompt(stdout, "Hour? ", &format!("{}", current.hour())).ok()?;
             if !hour_input.is_empty() {
                 current = current.replace_hour(hour_input.parse().ok()?).ok()?;
             }
-            let minute_input =
-                prompt(stdout, "Minute? ", &format!("{} ", current.minute())).ok()?;
+            let minute_input = prompt(stdout, "Minute? ", &format!("{}", current.minute())).ok()?;
             if !minute_input.is_empty() {
                 current = current.replace_minute(minute_input.parse().ok()?).ok()?;
             }
@@ -575,7 +574,9 @@ fn main() -> Result<()> {
                                     }
 
                                     if let Some(due) = t.due {
-                                        t.due = prompt_date_in_place(&mut stdout, due);
+                                        t.due = Some(
+                                            prompt_date_in_place(&mut stdout, due).unwrap_or(due),
+                                        );
                                     } else {
                                         t.due = prompt_date(&mut stdout);
                                     }
