@@ -17,15 +17,14 @@
                     due: None,
                     created: "2023-02-21 23:48:15.486200433 -05:00:00",
                 ),
-            ],
-            completed: [
                 (
-                    name: "Make Prompt More Dynamicy",
-                    done_time: Some("2023-02-22 00:15:42.561222579 -05:00:00"),
+                    name: "Fix spaces in prefill for change due date, and dont remove due date on error.",
+                    done_time: None,
                     due: None,
-                    created: "2023-02-22 00:00:34.522552208 -05:00:00",
+                    created: "2023-02-22 10:44:22.140882411 -05:00:00",
                 ),
             ],
+            completed: [],
             todo_archive: [
                 (
                     name: "che",
@@ -98,6 +97,12 @@
                     done_time: Some("2023-02-21 23:45:13.586301382 -05:00:00"),
                     due: Some("2023-02-21 23:45:06.556608224 -05:00:00"),
                     created: "2023-02-21 23:40:06.936552101 -05:00:00",
+                ),
+                (
+                    name: "Make Prompt More Dynamicy",
+                    done_time: Some("2023-02-22 00:15:42.561222579 -05:00:00"),
+                    due: None,
+                    created: "2023-02-22 00:00:34.522552208 -05:00:00",
                 ),
             ],
             subgroups: [],
