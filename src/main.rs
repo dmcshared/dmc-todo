@@ -63,6 +63,8 @@ fn format_hierarchy(context: &TodoConfig, stdout: &mut Stdout) {
                     if let Ok(now) = OffsetDateTime::now_local() {
                         if now > due {
                             queue!(v, SetForegroundColor(Color::Red)).ok();
+                        } else if (due - now).whole_hours() < 24 {
+                            queue!(v, SetForegroundColor(Color::Yellow)).ok();
                         }
                     }
                 }
