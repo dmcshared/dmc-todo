@@ -133,7 +133,7 @@ fn draw_vis(stdout: &mut Stdout, config: &TodoConfig, cursor: &Cursor) -> Result
 }
 
 fn prompt(stdout: &mut Stdout, prompt: &str) -> Result<String> {
-    disable_raw_mode()?;
+    // disable_raw_mode()?;
     execute!(stdout, Show)?;
 
     execute!(
@@ -152,6 +152,7 @@ fn prompt(stdout: &mut Stdout, prompt: &str) -> Result<String> {
         if let Event::Key(ke) = evt {
             if let KeyCode::Char(c) = ke.code {
                 out.push(c);
+                execute!(stdout, Print(c))?;
             } else if let KeyCode::Enter = ke.code {
                 done = true;
             }
@@ -159,7 +160,7 @@ fn prompt(stdout: &mut Stdout, prompt: &str) -> Result<String> {
     }
 
     execute!(stdout, Hide)?;
-    enable_raw_mode()?;
+    // enable_raw_mode()?;
 
     Ok(out)
 }

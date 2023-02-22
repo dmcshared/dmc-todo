@@ -6,12 +6,6 @@
             open: true,
             todos: [
                 (
-                    name: "Fix mouse input showing in prompt and other escapes",
-                    done_time: None,
-                    due: None,
-                    created: "2023-02-21 23:37:43.045387262 -05:00:00",
-                ),
-                (
                     name: "Fix not changing due date clears it",
                     done_time: None,
                     due: None,
@@ -20,16 +14,10 @@
             ],
             completed: [
                 (
-                    name: "Yellow Color when Todo is due in 24hrs",
-                    done_time: Some("2023-02-21 23:36:50.853936877 -05:00:00"),
-                    due: Some("2023-02-20 23:36:44.15223265 -05:00:00"),
-                    created: "2023-02-21 23:35:17.189076883 -05:00:00",
-                ),
-                (
-                    name: "Add mouse support to toggle items",
-                    done_time: Some("2023-02-21 23:36:52.523330082 -05:00:00"),
+                    name: "Fix mouse input showing in prompt and other escapes",
+                    done_time: Some("2023-02-21 23:42:55.054630859 -05:00:00"),
                     due: None,
-                    created: "2023-02-21 22:16:38.054037996 -05:00:00",
+                    created: "2023-02-21 23:37:43.045387262 -05:00:00",
                 ),
             ],
             todo_archive: [
@@ -68,6 +56,30 @@
                     done_time: None,
                     due: None,
                     created: "2023-02-21 23:37:03.593999791 -05:00:00",
+                ),
+                (
+                    name: "Add mouse support to toggle items",
+                    done_time: Some("2023-02-21 23:36:52.523330082 -05:00:00"),
+                    due: None,
+                    created: "2023-02-21 22:16:38.054037996 -05:00:00",
+                ),
+                (
+                    name: "Yellow Color when Todo is due in 24hrs",
+                    done_time: Some("2023-02-21 23:36:50.853936877 -05:00:00"),
+                    due: Some("2023-02-20 23:36:44.15223265 -05:00:00"),
+                    created: "2023-02-21 23:35:17.189076883 -05:00:00",
+                ),
+                (
+                    name: "gfdgfgdfgr",
+                    done_time: None,
+                    due: None,
+                    created: "2023-02-21 23:41:19.344670962 -05:00:00",
+                ),
+                (
+                    name: "water melon cheeburg sdna ASa",
+                    done_time: None,
+                    due: None,
+                    created: "2023-02-21 23:42:07.979731889 -05:00:00",
                 ),
             ],
             subgroups: [],
