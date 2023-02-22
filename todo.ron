@@ -17,15 +17,14 @@
                     due: None,
                     created: "2023-02-21 23:48:15.486200433 -05:00:00",
                 ),
-            ],
-            completed: [
                 (
-                    name: "Fix not changing due date clears it",
-                    done_time: Some("2023-02-21 23:45:13.586301382 -05:00:00"),
-                    due: Some("2023-02-21 23:45:06.556608224 -05:00:00"),
-                    created: "2023-02-21 23:40:06.936552101 -05:00:00",
+                    name: "Make Prompt More Dynamic",
+                    done_time: None,
+                    due: None,
+                    created: "2023-02-22 00:00:34.522552208 -05:00:00",
                 ),
             ],
+            completed: [],
             todo_archive: [
                 (
                     name: "che",
@@ -92,6 +91,12 @@
                     done_time: Some("2023-02-21 23:42:55.054630859 -05:00:00"),
                     due: None,
                     created: "2023-02-21 23:37:43.045387262 -05:00:00",
+                ),
+                (
+                    name: "Fix not changing due date clears it",
+                    done_time: Some("2023-02-21 23:45:13.586301382 -05:00:00"),
+                    due: Some("2023-02-21 23:45:06.556608224 -05:00:00"),
+                    created: "2023-02-21 23:40:06.936552101 -05:00:00",
                 ),
             ],
             subgroups: [],
