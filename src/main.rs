@@ -6,7 +6,6 @@ use std::{
     env,
     io::{stdout, Stdout, Write},
     path::PathBuf,
-    thread::sleep,
 };
 
 use anyhow::{anyhow, Result};
@@ -55,7 +54,6 @@ fn format_hierarchy(context: &TodoConfig, stdout: &mut Stdout) {
                 (g.open, v)
             },
             |t, d, v| {
-                // "{}[{}] {}\r\n",
                 let format_time = format_description::parse("[year]-[month]-[day] [hour]:[minute]")
                     .expect("Format to parse.");
 
@@ -99,9 +97,7 @@ fn format_hierarchy(context: &TodoConfig, stdout: &mut Stdout) {
                 }
                 queue!(v, Print("\r\n")).ok();
 
-                // if t.done_time.is_some() {
                 queue!(v, SetForegroundColor(Color::Reset)).ok();
-                // }
 
                 v
             },
@@ -329,8 +325,6 @@ fn main() -> Result<()> {
 
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture, Hide)?;
 
-    // println!("Press 'ESC' to quit.");
-
     draw_vis(&mut stdout, &config, &cursor)?;
 
     loop {
@@ -364,10 +358,6 @@ fn main() -> Result<()> {
             }
 
             let event = read()?;
-
-            // print!("{:?}", event);
-            // execute!(stdout, Clear(ClearType::All), Print(format!("{:?}", event)))?;
-            // sleep(std::time::Duration::from_millis(1000));
 
             match event {
                 Event::Key(ke) => {
@@ -724,10 +714,6 @@ fn main() -> Result<()> {
             }
 
             draw_vis(&mut stdout, &config, &cursor).ok();
-
-            // if event == Event::Key(KeyCode::Char('c').into()) {
-            //     println!("Cursor position: {:?}\r", position());
-            // }
         }
     }
 
