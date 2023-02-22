@@ -672,7 +672,13 @@ fn main() -> Result<()> {
         }
     }
 
-    execute!(stdout, Show, DisableMouseCapture, LeaveAlternateScreen)?;
+    execute!(
+        stdout,
+        Show,
+        DisableMouseCapture,
+        Clear(ClearType::All),
+        LeaveAlternateScreen
+    )?;
 
     disable_raw_mode()?;
 
