@@ -4,20 +4,19 @@
             hidden: false,
             name: "ToDo Fixes",
             open: true,
-            todos: [
-                (
-                    name: "Fix not changing due date clears it",
-                    done_time: None,
-                    due: None,
-                    created: "2023-02-21 23:40:06.936552101 -05:00:00",
-                ),
-            ],
+            todos: [],
             completed: [
                 (
                     name: "Fix mouse input showing in prompt and other escapes",
                     done_time: Some("2023-02-21 23:42:55.054630859 -05:00:00"),
                     due: None,
                     created: "2023-02-21 23:37:43.045387262 -05:00:00",
+                ),
+                (
+                    name: "Fix not changing due date clears it",
+                    done_time: Some("2023-02-21 23:45:13.586301382 -05:00:00"),
+                    due: Some("2023-02-21 23:45:06.556608224 -05:00:00"),
+                    created: "2023-02-21 23:40:06.936552101 -05:00:00",
                 ),
             ],
             todo_archive: [

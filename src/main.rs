@@ -200,31 +200,37 @@ fn prompt_date_in_place(
     stdout: &mut Stdout,
     mut current: OffsetDateTime,
 ) -> Option<OffsetDateTime> {
-    if prompt(stdout, "Change due date? (y/n) ").ok()? == "y" {
-        let year_input = prompt(stdout, &format!("Year? ({}) ", current.year())).ok()?;
-        if !year_input.is_empty() {
-            current = current.replace_year(year_input.parse().ok()?).ok()?;
-        }
-        let month_input = prompt(stdout, &format!("Month? ({}) ", current.month())).ok()?;
-        if !month_input.is_empty() {
-            current = current.replace_month(month_input.parse().ok()?).ok()?;
-        }
-        let day_input = prompt(stdout, &format!("Day? ({}) ", current.day())).ok()?;
-        if !day_input.is_empty() {
-            current = current.replace_day(day_input.parse().ok()?).ok()?;
-        }
-        let hour_input = prompt(stdout, &format!("Hour? ({}) ", current.hour())).ok()?;
-        if !hour_input.is_empty() {
-            current = current.replace_hour(hour_input.parse().ok()?).ok()?;
-        }
-        let minute_input = prompt(stdout, &format!("Minute? ({}) ", current.minute())).ok()?;
-        if !minute_input.is_empty() {
-            current = current.replace_minute(minute_input.parse().ok()?).ok()?;
-        }
+    let choice = prompt(stdout, "Change due date? (k/y/n) ").ok()?;
+    match choice.as_str() {
+        "y" => {
+            let year_input = prompt(stdout, &format!("Year? ({}) ", current.year())).ok()?;
+            if !year_input.is_empty() {
+                current = current.replace_year(year_input.parse().ok()?).ok()?;
+            }
+            let month_input = prompt(stdout, &format!("Month? ({}) ", current.month())).ok()?;
+            if !month_input.is_empty() {
+                current = current.replace_month(month_input.parse().ok()?).ok()?;
+            }
+            let day_input = prompt(stdout, &format!("Day? ({}) ", current.day())).ok()?;
+            if !day_input.is_empty() {
+                current = current.replace_day(day_input.parse().ok()?).ok()?;
+            }
+            let hour_input = prompt(stdout, &format!("Hour? ({}) ", current.hour())).ok()?;
+            if !hour_input.is_empty() {
+                current = current.replace_hour(hour_input.parse().ok()?).ok()?;
+            }
+            let minute_input = prompt(stdout, &format!("Minute? ({}) ", current.minute())).ok()?;
+            if !minute_input.is_empty() {
+                current = current.replace_minute(minute_input.parse().ok()?).ok()?;
+            }
 
-        Some(current)
-    } else {
-        None
+            Some(current)
+        }
+        "n" => None,
+        _ => {
+            // Keep
+            Some(current)
+        }
     }
 }
 
