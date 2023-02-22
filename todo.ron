@@ -17,14 +17,15 @@
                     due: None,
                     created: "2023-02-21 23:48:15.486200433 -05:00:00",
                 ),
+            ],
+            completed: [
                 (
-                    name: "Make Prompt More Dynamic",
-                    done_time: None,
+                    name: "Make Prompt More Dynamicy",
+                    done_time: Some("2023-02-22 00:15:42.561222579 -05:00:00"),
                     due: None,
                     created: "2023-02-22 00:00:34.522552208 -05:00:00",
                 ),
             ],
-            completed: [],
             todo_archive: [
                 (
                     name: "che",

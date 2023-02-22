@@ -132,7 +132,7 @@ fn draw_vis(stdout: &mut Stdout, config: &TodoConfig, cursor: &Cursor) -> Result
     Ok(())
 }
 
-fn prompt(stdout: &mut Stdout, prompt: &str) -> Result<String> {
+fn prompt(stdout: &mut Stdout, prompt: &str, def: &str) -> Result<String> {
     // disable_raw_mode()?;
     execute!(stdout, Show)?;
 
@@ -143,16 +143,49 @@ fn prompt(stdout: &mut Stdout, prompt: &str) -> Result<String> {
         Print(prompt)
     )?;
 
-    let mut out = String::new();
+    let mut out = def.to_string();
+    let mut cursor_pos = out.len();
 
     let mut done = false;
 
     while !done {
+        execute!(
+            stdout,
+            MoveTo(
+                prompt
+                    .len()
+                    .try_into()
+                    .expect("Prompt should be less than 64Ki bytes."),
+                0
+            ),
+            Clear(ClearType::UntilNewLine),
+            Print(&out),
+            MoveTo(
+                (prompt.len() + cursor_pos)
+                    .try_into()
+                    .expect("Prompt should be less than 64Ki bytes."),
+                0
+            ),
+        )?;
+
         let evt = read()?;
         if let Event::Key(ke) = evt {
             if let KeyCode::Char(c) = ke.code {
-                out.push(c);
-                execute!(stdout, Print(c))?;
+                out.insert(cursor_pos, c);
+                cursor_pos += 1;
+            } else if let KeyCode::Backspace = ke.code {
+                out.remove(cursor_pos - 1);
+                cursor_pos -= 1;
+            } else if let KeyCode::Left = ke.code {
+                cursor_pos = cursor_pos.saturating_sub(1);
+            } else if let KeyCode::Right = ke.code {
+                if cursor_pos < out.len() {
+                    cursor_pos += 1;
+                }
+            } else if let KeyCode::Home = ke.code {
+                cursor_pos = 0;
+            } else if let KeyCode::End = ke.code {
+                cursor_pos = out.len();
             } else if let KeyCode::Enter = ke.code {
                 done = true;
             }
@@ -166,26 +199,26 @@ fn prompt(stdout: &mut Stdout, prompt: &str) -> Result<String> {
 }
 
 fn prompt_date(stdout: &mut Stdout) -> Option<OffsetDateTime> {
-    if prompt(stdout, "Add a due date? (y/n) ").ok()? == "y" {
+    if prompt(stdout, "Add a due date? (y/n) ", "").ok()? == "y" {
         let mut current = OffsetDateTime::now_local().ok()?;
 
-        let year_input = prompt(stdout, &format!("Year? ({}) ", current.year())).ok()?;
+        let year_input = prompt(stdout, "Year?  ", &format!("{}", current.year())).ok()?;
         if !year_input.is_empty() {
             current = current.replace_year(year_input.parse().ok()?).ok()?;
         }
-        let month_input = prompt(stdout, &format!("Month? ({}) ", current.month())).ok()?;
+        let month_input = prompt(stdout, "Month? ", &format!("{}", current.month())).ok()?;
         if !month_input.is_empty() {
             current = current.replace_month(month_input.parse().ok()?).ok()?;
         }
-        let day_input = prompt(stdout, &format!("Day? ({}) ", current.day())).ok()?;
+        let day_input = prompt(stdout, "Day? ", &format!("{}", current.day())).ok()?;
         if !day_input.is_empty() {
             current = current.replace_day(day_input.parse().ok()?).ok()?;
         }
-        let hour_input = prompt(stdout, &format!("Hour? ({}) ", current.hour())).ok()?;
+        let hour_input = prompt(stdout, "Hour? ", &format!("{}", current.hour())).ok()?;
         if !hour_input.is_empty() {
             current = current.replace_hour(hour_input.parse().ok()?).ok()?;
         }
-        let minute_input = prompt(stdout, &format!("Minute? ({}) ", current.minute())).ok()?;
+        let minute_input = prompt(stdout, "Minute? ", &format!("{}", current.minute())).ok()?;
         if !minute_input.is_empty() {
             current = current.replace_minute(minute_input.parse().ok()?).ok()?;
         }
@@ -200,26 +233,27 @@ fn prompt_date_in_place(
     stdout: &mut Stdout,
     mut current: OffsetDateTime,
 ) -> Option<OffsetDateTime> {
-    let choice = prompt(stdout, "Change due date? (k/y/n) ").ok()?;
+    let choice = prompt(stdout, "Change due date? (k/y/n) ", "").ok()?;
     match choice.as_str() {
         "y" => {
-            let year_input = prompt(stdout, &format!("Year? ({}) ", current.year())).ok()?;
+            let year_input = prompt(stdout, "Year? ", &format!("{} ", current.year())).ok()?;
             if !year_input.is_empty() {
                 current = current.replace_year(year_input.parse().ok()?).ok()?;
             }
-            let month_input = prompt(stdout, &format!("Month? ({}) ", current.month())).ok()?;
+            let month_input = prompt(stdout, "Month? ", &format!("{} ", current.month())).ok()?;
             if !month_input.is_empty() {
                 current = current.replace_month(month_input.parse().ok()?).ok()?;
             }
-            let day_input = prompt(stdout, &format!("Day? ({}) ", current.day())).ok()?;
+            let day_input = prompt(stdout, "Day? ", &format!("{} ", current.day())).ok()?;
             if !day_input.is_empty() {
                 current = current.replace_day(day_input.parse().ok()?).ok()?;
             }
-            let hour_input = prompt(stdout, &format!("Hour? ({}) ", current.hour())).ok()?;
+            let hour_input = prompt(stdout, "Hour? ", &format!("{} ", current.hour())).ok()?;
             if !hour_input.is_empty() {
                 current = current.replace_hour(hour_input.parse().ok()?).ok()?;
             }
-            let minute_input = prompt(stdout, &format!("Minute? ({}) ", current.minute())).ok()?;
+            let minute_input =
+                prompt(stdout, "Minute? ", &format!("{} ", current.minute())).ok()?;
             if !minute_input.is_empty() {
                 current = current.replace_minute(minute_input.parse().ok()?).ok()?;
             }
@@ -235,7 +269,7 @@ fn prompt_date_in_place(
 }
 
 fn create_top_group(config: &mut TodoConfig, stdout: &mut Stdout) -> Result<()> {
-    let name = prompt(stdout, "Enter Name for Top Group: ")?;
+    let name = prompt(stdout, "Enter Name for Top Group: ", "")?;
 
     config.groups.push(Group {
         hidden: false,
@@ -513,7 +547,7 @@ fn main() -> Result<()> {
                                 if let HierarchyItemEnumMut::Group(g) =
                                     h.find_item_mut(&mut config)?.item
                                 {
-                                    let todo_name = prompt(&mut stdout, "Todo: ")?;
+                                    let todo_name = prompt(&mut stdout, "Todo: ", "")?;
                                     g.todos.push(Todo {
                                         name: todo_name,
                                         done_time: None,
@@ -535,8 +569,7 @@ fn main() -> Result<()> {
                                 if let HierarchyItemEnumMut::Todo(t) =
                                     h.find_item_mut(&mut config)?.item
                                 {
-                                    let todo_name =
-                                        prompt(&mut stdout, &format!("Todo: ({}) ", &t.name))?;
+                                    let todo_name = prompt(&mut stdout, "Todo: ", &t.name)?;
                                     if !todo_name.is_empty() {
                                         t.name = todo_name;
                                     }
@@ -561,7 +594,7 @@ fn main() -> Result<()> {
                                 if let HierarchyItemEnumMut::Group(g) =
                                     h.find_item_mut(&mut config)?.item
                                 {
-                                    let group_name = prompt(&mut stdout, "Group: ")?;
+                                    let group_name = prompt(&mut stdout, "Group: ", "")?;
                                     g.subgroups.push(Group {
                                         name: group_name,
                                         hidden: false,
@@ -588,7 +621,7 @@ fn main() -> Result<()> {
                                     h.find_item_mut(&mut config)?.item
                                 {
                                     let group_name =
-                                        prompt(&mut stdout, &format!("Group: ({}) ", &g.name))?;
+                                        prompt(&mut stdout, "Group: ", &format!("{} ", &g.name))?;
                                     if !group_name.is_empty() {
                                         g.name = group_name;
                                     }
@@ -596,7 +629,7 @@ fn main() -> Result<()> {
                             }
                         }
                     } else if ke.code == config.keybindings.add_top_group {
-                        let group_name = prompt(&mut stdout, "Group: ")?;
+                        let group_name = prompt(&mut stdout, "Group: ", "")?;
                         config.groups.push(Group {
                             name: group_name,
                             hidden: false,
