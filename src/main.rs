@@ -734,6 +734,11 @@ fn main() -> Result<()> {
                                 0,
                             );
                         }
+                    } else if ke.code == config.keybindings.help {
+                        // print help
+                        execute!(stdout, MoveTo(0, 0), Clear(ClearType::All), Print("Help:"))?;
+
+                        while !(matches!(read()?, Event::Key(_))) {}
                     }
                 }
                 Event::Mouse(me) => {
