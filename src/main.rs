@@ -16,7 +16,7 @@ use crossterm::{
         MouseButton, MouseEventKind,
     },
     execute, queue,
-    style::{Color, Print, SetForegroundColor},
+    style::{Color, Print, ResetColor, SetForegroundColor},
     terminal::{
         disable_raw_mode, enable_raw_mode, Clear, ClearType, EnterAlternateScreen,
         LeaveAlternateScreen,
@@ -37,20 +37,17 @@ fn format_hierarchy(context: &TodoConfig, stdout: &mut Stdout) {
         out = group.traverse(
             out,
             |g, d, v| {
-                queue!(
-                    v,
-                    Print("  ".repeat(d)),
-                    Print("["),
-                    Print(if g.open {
-                        '*'
-                    } else {
-                        num_to_str(g.todo_count())
-                    }),
-                    Print("] "),
-                    Print(&g.name),
-                    Print("\r\n")
-                )
-                .ok();
+                queue!(v, Print("  ".repeat(d)), Print("["),).ok();
+                if g.open {
+                    queue!(v, Print('*')).ok();
+                } else {
+                    if g.todo_count() == 0 {
+                        queue!(v, SetForegroundColor(Color::DarkGrey)).ok();
+                    }
+                    queue!(v, Print(num_to_str(g.todo_count()))).ok();
+                    queue!(v, ResetColor).ok();
+                }
+                queue!(v, Print("] "), Print(&g.name), Print("\r\n")).ok();
                 (g.open, v)
             },
             |t, d, v| {
