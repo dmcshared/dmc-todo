@@ -171,8 +171,10 @@ fn prompt(stdout: &mut Stdout, prompt: &str, def: &str) -> Result<String> {
                 out.insert(cursor_pos, c);
                 cursor_pos += 1;
             } else if let KeyCode::Backspace = ke.code {
-                out.remove(cursor_pos - 1);
-                cursor_pos -= 1;
+                if cursor_pos > 0 {
+                    out.remove(cursor_pos - 1);
+                    cursor_pos -= 1;
+                }
             } else if let KeyCode::Left = ke.code {
                 cursor_pos = cursor_pos.saturating_sub(1);
             } else if let KeyCode::Right = ke.code {
